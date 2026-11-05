@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title description">
+  <title id="title">Multimodal turn-taking prediction pipeline</title>
+  <desc id="description">WAV audio becomes three prosodic features. ROS transforms become five pose PCA components. Timed ASR transcripts are merged and scored by TurnGPT to produce confidence, a score, and speaking flags. These streams are aligned at nominally 20 Hz for LSTM training and future interviewer activity prediction.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#667580"/>
+    </marker>
+    <style>
+      text { font-family: 'DejaVu Sans', sans-serif; fill: #202c33; }
+      .heading { font-size: 27px; font-weight: 700; }
+      .section { font-size: 12px; font-weight: 700; fill: #53616a; }
+      .label { font-size: 18px; font-weight: 700; }
+      .body { font-size: 14px; }
+      .muted { font-size: 13px; fill: #53616a; }
+      .path { fill: none; stroke: #667580; stroke-width: 2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1200" height="680" fill="#ffffff"/>
+  <text x="40" y="48" class="heading">From conversation streams to future speech activity</text>
+  <text x="40" y="75" class="muted">Implementation schematic | nominal 20 Hz alignment | no experimental results shown</text>
+  <line x1="40" y1="96" x2="1160" y2="96" stroke="#d8dfe3"/>
+  <text x="40" y="127" class="section">SOURCE STREAM</text>
+  <text x="285" y="127" class="section">FEATURE EXTRACTION</text>
+  <text x="645" y="127" class="section">ALIGNMENT</text>
+  <text x="935" y="127" class="section">LEARNING + FORECAST</text>
+
+  <rect x="40" y="150" width="200" height="104" rx="6" fill="#eef7f3" stroke="#8bbda9"/>
+  <text x="58" y="183" class="label">WAV audio</text>
+  <text x="58" y="208" class="body">16 kHz loading</text>
+  <text x="58" y="231" class="muted">ROS bag start time</text>
+  <rect x="285" y="150" width="305" height="104" rx="6" fill="#eef7f3" stroke="#8bbda9"/>
+  <text x="303" y="183" class="label">Prosody: 3 features</text>
+  <text x="303" y="208" class="body">Pitch-bin index, RMS dB, onset</text>
+  <text x="303" y="231" class="muted">Per-recording standardization</text>
+  <path d="M 240 202 H 278" class="path"/>
+
+  <rect x="40" y="290" width="200" height="104" rx="6" fill="#eef4fb" stroke="#91afd1"/>
+  <text x="58" y="323" class="label">ROS pose bags</text>
+  <text x="58" y="348" class="body">Hands, elbows, head</text>
+  <text x="58" y="371" class="muted">Torso-relative translation</text>
+  <rect x="285" y="290" width="305" height="104" rx="6" fill="#eef4fb" stroke="#91afd1"/>
+  <text x="303" y="323" class="label">Gesture: 5 components</text>
+  <text x="303" y="348" class="body">15 coordinates to 5 PCA values</text>
+  <text x="303" y="371" class="muted">StandardScaler followed by PCA</text>
+  <path d="M 240 342 H 278" class="path"/>
+
+  <rect x="40" y="430" width="200" height="130" rx="6" fill="#fcf0f3" stroke="#d4a2b0"/>
+  <text x="58" y="463" class="label">ASR transcripts</text>
+  <text x="58" y="488" class="body">Timing + confidence</text>
+  <text x="58" y="511" class="body">Speaker-tagged JSON</text>
+  <text x="58" y="537" class="muted">Both conversation streams</text>
+  <rect x="285" y="430" width="305" height="130" rx="6" fill="#fcf0f3" stroke="#d4a2b0"/>
+  <text x="303" y="463" class="label">Text + speaking state</text>
+  <text x="303" y="488" class="body">Parse, merge, score with TurnGPT</text>
+  <text x="303" y="511" class="body">Confidence + score + two flags</text>
+  <text x="303" y="537" class="muted">Raw words remain in CSV only</text>
+  <path d="M 240 495 H 278" class="path"/>
+
+  <rect x="645" y="266" width="235" height="170" rx="6" fill="#f5f7f8" stroke="#a6b2ba"/>
+  <text x="663" y="301" class="label">Merged feature CSV</text>
+  <text x="663" y="330" class="body">50 ms time step</text>
+  <text x="663" y="355" class="body">11 model inputs for all cues</text>
+  <text x="663" y="380" class="body">Interviewer flag is the target</text>
+  <text x="663" y="409" class="muted">Timestamp + words excluded</text>
+  <path d="M 590 202 H 617 V 300 H 638" class="path"/>
+  <path d="M 590 342 H 638" class="path"/>
+  <path d="M 590 495 H 617 V 402 H 638" class="path"/>
+
+  <rect x="935" y="266" width="225" height="100" rx="6" fill="#f5f7f8" stroke="#a6b2ba"/>
+  <text x="953" y="302" class="label">LSTM + dense head</text>
+  <text x="953" y="330" class="body">140 observed frames</text>
+  <text x="953" y="350" class="muted">Selectable feature ablations</text>
+  <path d="M 880 316 H 928" class="path"/>
+  <rect x="935" y="420" width="225" height="112" rx="6" fill="#eef7f3" stroke="#8bbda9"/>
+  <text x="953" y="454" class="label">60 sigmoid scores</text>
+  <text x="953" y="481" class="body">Future interviewer activity</text>
+  <text x="953" y="507" class="muted">Up to 3 seconds ahead</text>
+  <path d="M 1047 366 V 413" class="path"/>
+
+  <line x1="40" y1="604" x2="1160" y2="604" stroke="#d8dfe3"/>
+  <text x="40" y="632" class="body">Training: fixed split or five held-out recording-ID folds</text>
+  <text x="40" y="655" class="muted">Evaluation: stream one frame at a time; reset recurrent state between recordings.</text>
+</svg>

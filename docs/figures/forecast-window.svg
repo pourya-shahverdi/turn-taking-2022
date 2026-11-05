@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title description">
+  <title id="title">Training window and future activity prediction</title>
+  <desc id="description">A 200-frame training window contains 140 observed frames followed by 60 future target frames. At nominally 20 Hz, the observation covers seven seconds and the forecast covers three seconds. An LSTM maps the observed inputs to a dense layer with 60 independent sigmoid scores. MAE is measured on the first 5, 10, 20, 40, and 60 forecast frames. The activity example is illustrative, not measured.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#667580"/>
+    </marker>
+    <pattern id="observed-grid" width="4" height="104" patternUnits="userSpaceOnUse">
+      <rect width="4" height="104" fill="#eef4fb"/>
+      <path d="M 0 0 V 104" stroke="#b9cce1" stroke-width="0.7"/>
+    </pattern>
+    <pattern id="future-grid" width="4" height="104" patternUnits="userSpaceOnUse">
+      <rect width="4" height="104" fill="#eef7f3"/>
+      <path d="M 0 0 V 104" stroke="#b1d1c2" stroke-width="0.7"/>
+    </pattern>
+    <style>
+      text { font-family: 'DejaVu Sans', sans-serif; fill: #202c33; }
+      .heading { font-size: 27px; font-weight: 700; }
+      .label { font-size: 18px; font-weight: 700; }
+      .body { font-size: 14px; }
+      .muted { font-size: 13px; fill: #53616a; }
+      .path { fill: none; stroke: #667580; stroke-width: 2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1200" height="620" fill="#ffffff"/>
+  <text x="40" y="48" class="heading">Observe 7 seconds. Forecast the next 3.</text>
+  <text x="40" y="75" class="muted">200-frame training windows | stride: 2 frames | time labels assume contiguous 20 Hz samples</text>
+  <line x1="40" y1="96" x2="1160" y2="96" stroke="#d8dfe3"/>
+
+  <text x="40" y="140" class="label">Sequence window</text>
+  <text x="460" y="147" text-anchor="middle" class="label">Observed features</text>
+  <text x="860" y="147" text-anchor="middle" class="label">Future labels</text>
+  <rect x="180" y="167" width="560" height="104" fill="url(#observed-grid)" stroke="#91afd1"/>
+  <rect x="740" y="167" width="240" height="104" fill="url(#future-grid)" stroke="#8bbda9"/>
+  <rect x="315" y="192" width="280" height="54" rx="4" fill="#ffffff" fill-opacity="0.95"/>
+  <text x="455" y="214" text-anchor="middle" class="label">140 frames</text>
+  <text x="455" y="235" text-anchor="middle" class="body">7 seconds of input history</text>
+  <rect x="758" y="192" width="204" height="54" rx="4" fill="#ffffff" fill-opacity="0.95"/>
+  <text x="860" y="214" text-anchor="middle" class="label">60 frames</text>
+  <text x="860" y="235" text-anchor="middle" class="body">3 seconds of targets</text>
+  <line x1="740" y1="153" x2="740" y2="320" stroke="#202c33" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="180" y="294" class="muted">-7 s</text>
+  <text x="740" y="294" text-anchor="middle" class="body">Forecast boundary</text>
+  <text x="980" y="294" text-anchor="end" class="muted">+3 s</text>
+
+  <text x="40" y="344" class="body">Target example</text>
+  <text x="40" y="364" class="muted">Illustrative only</text>
+  <path d="M 180 365 H 980" fill="none" stroke="#d8dfe3"/>
+  <path d="M 740 361 H 824 V 334 H 920 V 361 H 980" fill="none" stroke="#31785f" stroke-width="3"/>
+  <text x="1000" y="343" class="muted">Speaking = 1</text>
+  <text x="1000" y="366" class="muted">Silent = 0</text>
+
+  <rect x="180" y="407" width="220" height="75" rx="6" fill="#eef4fb" stroke="#91afd1"/>
+  <text x="290" y="437" text-anchor="middle" class="label">Observed inputs</text>
+  <text x="290" y="460" text-anchor="middle" class="body">140 x feature width</text>
+  <rect x="450" y="407" width="180" height="75" rx="6" fill="#f5f7f8" stroke="#a6b2ba"/>
+  <text x="540" y="437" text-anchor="middle" class="label">LSTM</text>
+  <text x="540" y="460" text-anchor="middle" class="body">60 units by default</text>
+  <rect x="680" y="407" width="300" height="75" rx="6" fill="#eef7f3" stroke="#8bbda9"/>
+  <text x="830" y="437" text-anchor="middle" class="label">Dense(60) + sigmoid</text>
+  <text x="830" y="460" text-anchor="middle" class="body">One activity score per future frame</text>
+  <path d="M 400 444 H 443" class="path"/>
+  <path d="M 630 444 H 673" class="path"/>
+
+  <line x1="40" y1="521" x2="1160" y2="521" stroke="#d8dfe3"/>
+  <text x="40" y="550" class="label">Forecast-prefix MAE</text>
+  <text x="300" y="550" class="body">5 frames / 0.25 s</text>
+  <text x="480" y="550" class="body">10 / 0.5 s</text>
+  <text x="650" y="550" class="body">20 / 1 s</text>
+  <text x="810" y="550" class="body">40 / 2 s</text>
+  <text x="980" y="550" class="body">60 / 3 s</text>
+  <text x="40" y="587" class="muted">Interviewer activity is the target, not an input. The interviewee speaking flag remains an input in every feature setting.</text>
+</svg>
